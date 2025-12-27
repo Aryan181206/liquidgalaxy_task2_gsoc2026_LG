@@ -330,6 +330,27 @@ Future<void> forceRefresh(int screenNumber) async{
     return await file.writeAsString(content);
   }
 
+  Future<bool> cleanKML() async{
+    bool allSuccessful = true ;
+    final clearCommand =  'echo "exittour=true" > /tmp/query.txt && > /var/www/html/kmls.txt';
+
+    final headerCleared = await execute(clearCommand, 'KMLs.txt cleared');
+
+    allSuccessful = allSuccessful && (headerCleared != null);
+    int rightMost = calculateRightMostScreen(_lgConnectionModel.screens);
+    const blankKml =
+    '''<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2">
+        <Document><name>Empty</name></Document></kml>''';
+
+    final cleared = await execute("echo '$blankKml' > /var/www/html/kml/slave_$rightMost.kml",'Rightmost screen cleared');
+
+    allSuccessful = allSuccessful && (cleared != null);
+
+    await forceRefresh(rightMost);
+    return allSuccessful ;
+
+  }
+
 
   // basic lg services
   Future<bool> shutdown() async {
@@ -360,6 +381,9 @@ Future<void> forceRefresh(int screenNumber) async{
       return false;
     }
   }
+
+
+
 
 
   Future<bool> relaunchLG() async {
@@ -467,26 +491,6 @@ Future<void> forceRefresh(int screenNumber) async{
   }
 
 
-  Future<bool> cleanKML() async{
-    bool allSuccessful = true ;
-    final clearCommand =  'echo "exittour=true" > /tmp/query.txt && > /var/www/html/kmls.txt';
-
-    final headerCleared = await execute(clearCommand, 'KMLs.txt cleared');
-
-    allSuccessful = allSuccessful && (headerCleared != null);
-    int rightMost = calculateRightMostScreen(_lgConnectionModel.screens);
-    const blankKml =
-    '''<?xml version="1.0" encoding="UTF-8"?><kml xmlns="http://www.opengis.net/kml/2.2">
-        <Document><name>Empty</name></Document></kml>''';
-
-    final cleared = await execute("echo '$blankKml' > /var/www/html/kml/slave_$rightMost.kml",'Rightmost screen cleared');
-
-    allSuccessful = allSuccessful && (cleared != null);
-
-    await forceRefresh(rightMost);
-    return allSuccessful ;
-
-  }
 
 
 

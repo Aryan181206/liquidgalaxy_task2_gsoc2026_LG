@@ -129,7 +129,7 @@ class _SettingScreenState extends State<SettingScreen> {
               bool? success = await _lgService.connectToLG();
               if(success==true){
                 print("Connected Successfully");
-                await _lgService.execute('echo "search=japan" > /tmp/query.txt', 'First cmd Sent');
+                await _lgService.execute('echo "search=spain" > /tmp/query.txt', 'First cmd Sent');
                 setState(() {
                   _isConnected = success ?? false ;
                 });
