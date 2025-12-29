@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             await _lgService.connectToLG();
                           }
                           if(_lgService.isConnected){
-                             // check the selection from the drop box accordingly send the kml
+
                             if(selectedKml == "Plate Boundaries"){
                               await _lgService.sendKml('assets/plates.kml');
                             }else if(selectedKml == "Quadrilateral"){
@@ -278,11 +278,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     );
   }
-
-
-
-
-
 
 
 
